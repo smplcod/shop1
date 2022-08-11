@@ -1,7 +1,13 @@
 import { useState, useEffect } from "react";
 import Navigation from "./Navigation";
 import { db } from "./FirebaseConfig";
-import { collection, getDocs, addDoc } from "firebase/firestore";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  doc,
+} from "firebase/firestore";
 import { Button, TextField } from "@mui/material";
 
 function App() {
@@ -12,7 +18,13 @@ function App() {
   const usersCollectionRef = collection(db, "users");
 
   const createUser = async () => {
-    await addDoc(usersCollectionRef, { name: newName, age: newAge });
+    await addDoc(usersCollectionRef, { name: newName, age: Number(newAge) });
+  };
+
+  const updateUser = async (id, age) => {
+    const userDoc = doc(db, "users", id);
+    const newFields = { age: age + 1 };
+    await updateDoc(userDoc, newFields);
   };
 
   useEffect(() => {
@@ -50,6 +62,13 @@ function App() {
           <div key={user.id}>
             <h2>Name: {user.name}</h2>
             <h3>Age: {user.age}</h3>
+            <Button
+              onClick={() => {
+                updateUser(user.id, user.age);
+              }}
+            >
+              Increase Age
+            </Button>
           </div>
         );
       })}
