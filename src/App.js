@@ -1,7 +1,7 @@
-import Navigation from "./Navigation";
+import Router from "./Router";
 
 function App() {
-  return <Navigation />;
+  return <Router />;
 }
 
 export default App;

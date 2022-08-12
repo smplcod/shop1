@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import MainPage from "./pages/MainPage";
 
-function Navigation() {
+function Router() {
   return (
     <BrowserRouter>
       <Routes>
@@ -12,4 +12,4 @@ function Navigation() {
   );
 }
 
-export default Navigation;
+export default Router;

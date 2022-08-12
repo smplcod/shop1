@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Navigation from "./Navigation";
+import Navigation from "./Router";
 import { db } from "./FirebaseConfig";
 import {
   collection,
