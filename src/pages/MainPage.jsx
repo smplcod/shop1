@@ -65,7 +65,7 @@ function MainPage() {
         <input
           placeholder="Password..."
           onChange={(e) => {
-            //setRegisterPassword(e.target.value);
+            setRegisterPassword(e.target.value);
           }}
         />
         <button onClick={register}>Register</button>
@@ -76,13 +76,13 @@ function MainPage() {
         <input
           placeholder="Email..."
           onChange={(e) => {
-            //setLoginEmail(e.target.value);
+            setLoginEmail(e.target.value);
           }}
         />
         <input
           placeholder="Password..."
           onChange={(e) => {
-            //setLoginPassword(e.target.value);
+            setLoginPassword(e.target.value);
           }}
         />
         <button onClick={login}>Log-in</button>
