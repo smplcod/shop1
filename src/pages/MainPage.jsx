@@ -1,11 +1,11 @@
-import React, { useState } from "react";
-import { auth } from "../FirebaseConfig";
+import { useState, useEffect } from "react";
 import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   onAuthStateChanged,
   signOut,
 } from "firebase/auth";
+import { auth } from "../FirebaseConfig";
 
 function MainPage() {
   const [registerEmail, setRegisterEmail] = useState("");
@@ -15,9 +15,11 @@ function MainPage() {
 
   const [user, setUser] = useState({});
 
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+  }, []);
 
   const register = async () => {
     try {
@@ -52,6 +54,7 @@ function MainPage() {
   return (
     <div className="App">
       <div>
+        <h2>My</h2>
         <h3>Registration</h3>
         <input
           placeholder="Email..."
@@ -65,9 +68,7 @@ function MainPage() {
             //setRegisterPassword(e.target.value);
           }}
         />
-        <button onClick={register} type="submit">
-          Register
-        </button>
+        <button onClick={register}>Register</button>
       </div>
 
       <div>
