@@ -1,13 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { auth } from "../FirebaseConfig";
 import {
   createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
   onAuthStateChanged,
+  signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
 
 function MainPage() {
+  // const usersCollectionRef = collection(db, "users0");
+  // useEffect(() => {}, []);
+
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -18,7 +21,6 @@ function MainPage() {
   onAuthStateChanged(auth, (currentUser) => {
     setUser(currentUser);
   });
-
   const register = async () => {
     try {
       const user = await createUserWithEmailAndPassword(
@@ -31,7 +33,6 @@ function MainPage() {
       console.log(error.message);
     }
   };
-
   const login = async () => {
     try {
       const user = await signInWithEmailAndPassword(
@@ -44,37 +45,27 @@ function MainPage() {
       console.log(error.message);
     }
   };
-
   const logout = async () => {
     await signOut(auth);
   };
 
   return (
-    <div className="App">
+    <div>
       <div>
         <h3>Registration</h3>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            // handleSubmit();
+        <input
+          placeholder="Email..."
+          onChange={(e) => {
+            setRegisterEmail(e.target.value);
           }}
-        >
-          <input
-            placeholder="Email..."
-            onChange={(e) => {
-              setRegisterEmail(e.target.value);
-            }}
-          />
-          <input
-            placeholder="Password..."
-            onChange={(e) => {
-              //setRegisterPassword(e.target.value);
-            }}
-          />
-          <button onClick={register} type="submit">
-            Register
-          </button>
-        </form>
+        />
+        <input
+          placeholder="Password..."
+          onChange={(e) => {
+            setRegisterPassword(e.target.value);
+          }}
+        />
+        <button onClick={register}>Register</button>
       </div>
 
       <div>
@@ -82,13 +73,13 @@ function MainPage() {
         <input
           placeholder="Email..."
           onChange={(e) => {
-            //setLoginEmail(e.target.value);
+            setLoginEmail(e.target.value);
           }}
         />
         <input
           placeholder="Password..."
           onChange={(e) => {
-            //setLoginPassword(e.target.value);
+            setLoginPassword(e.target.value);
           }}
         />
         <button onClick={login}>Log-in</button>

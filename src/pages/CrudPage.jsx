@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import Navigation from "../Router";
 import { db } from "../FirebaseConfig";
 import {
   collection,
@@ -17,20 +16,20 @@ function CrudPage() {
   const [newAge, setNewAge] = useState(0);
 
   const [users, setUsers] = useState([]);
-  const usersCollectionRef = collection(db, "users");
+  const usersCollectionRef = collection(db, "users0");
 
   const createUser = async () => {
     await addDoc(usersCollectionRef, { name: newName, age: Number(newAge) });
   };
 
   const updateUser = async (id, age) => {
-    const userDoc = doc(db, "users", id);
+    const userDoc = doc(db, "users0", id);
     const newFields = { age: age + 1 };
     await updateDoc(userDoc, newFields);
   };
 
   const deleteUser = async (id) => {
-    const userDoc = doc(db, "users", id);
+    const userDoc = doc(db, "users0", id);
     await deleteDoc(userDoc);
   };
 
@@ -41,8 +40,6 @@ function CrudPage() {
     };
     getUsers();
   }, []);
-
-  // return <Navigation />;
 
   return (
     <div className="App">
