@@ -1,16 +1,13 @@
-import React, { useState } from "react";
-import { auth } from "../FirebaseConfig";
+import { useState, useEffect } from "react";
 import {
   createUserWithEmailAndPassword,
-  onAuthStateChanged,
   signInWithEmailAndPassword,
+  onAuthStateChanged,
   signOut,
 } from "firebase/auth";
+import { auth } from "../FirebaseConfig";
 
-function MainPage() {
-  // const usersCollectionRef = collection(db, "users0");
-  // useEffect(() => {}, []);
-
+function AuthPage() {
   const [registerEmail, setRegisterEmail] = useState("");
   const [registerPassword, setRegisterPassword] = useState("");
   const [loginEmail, setLoginEmail] = useState("");
@@ -18,9 +15,12 @@ function MainPage() {
 
   const [user, setUser] = useState({});
 
-  onAuthStateChanged(auth, (currentUser) => {
-    setUser(currentUser);
-  });
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+    });
+  }, []);
+
   const register = async () => {
     try {
       const user = await createUserWithEmailAndPassword(
@@ -33,6 +33,7 @@ function MainPage() {
       console.log(error.message);
     }
   };
+
   const login = async () => {
     try {
       const user = await signInWithEmailAndPassword(
@@ -45,13 +46,15 @@ function MainPage() {
       console.log(error.message);
     }
   };
+
   const logout = async () => {
     await signOut(auth);
   };
 
   return (
-    <div>
+    <div className="App">
       <div>
+        <h2>My</h2>
         <h3>Registration</h3>
         <input
           placeholder="Email..."
@@ -92,4 +95,4 @@ function MainPage() {
   );
 }
 
-export default MainPage;
+export default AuthPage;
