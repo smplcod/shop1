@@ -53,28 +53,21 @@ function MainPage() {
     <div className="App">
       <div>
         <h3>Registration</h3>
-        <form
-          onSubmit={(e) => {
-            e.preventDefault();
-            // handleSubmit();
+        <input
+          placeholder="Email..."
+          onChange={(e) => {
+            setRegisterEmail(e.target.value);
           }}
-        >
-          <input
-            placeholder="Email..."
-            onChange={(e) => {
-              setRegisterEmail(e.target.value);
-            }}
-          />
-          <input
-            placeholder="Password..."
-            onChange={(e) => {
-              //setRegisterPassword(e.target.value);
-            }}
-          />
-          <button onClick={register} type="submit">
-            Register
-          </button>
-        </form>
+        />
+        <input
+          placeholder="Password..."
+          onChange={(e) => {
+            //setRegisterPassword(e.target.value);
+          }}
+        />
+        <button onClick={register} type="submit">
+          Register
+        </button>
       </div>
 
       <div>
