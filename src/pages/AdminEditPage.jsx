@@ -9,10 +9,18 @@ import {
   Button,
 } from "@mui/material";
 import { AdminContext } from "../contexts/AdminProvider";
+import { useParams } from "react-router-dom";
 
-function AdminAddPage() {
-  const { sendNewGoods, countries1, countries2 } =
-    React.useContext(AdminContext);
+function AdminEditPage() {
+  const { id } = useParams();
+
+  const {
+    sendNewGoods,
+    countries1,
+    getGoodsToEdit,
+    goodsToEdit,
+    saveEditedGoods,
+  } = React.useContext(AdminContext);
 
   const [title, setTitle] = React.useState("");
   const [price, setPrice] = React.useState("");
@@ -35,7 +43,7 @@ function AdminAddPage() {
         return;
       }
     }
-    sendNewGoods(newGoods);
+    saveEditedGoods(id, newGoods);
     setTitle("");
     setPrice("");
     setBrand("");
@@ -43,10 +51,24 @@ function AdminAddPage() {
     setCountry("");
   };
 
+  React.useEffect(() => {
+    getGoodsToEdit(id);
+  }, []);
+
+  React.useEffect(() => {
+    if (goodsToEdit) {
+      setTitle(goodsToEdit.title);
+      setPrice(goodsToEdit.price);
+      setBrand(goodsToEdit.brand);
+      setPhoto(goodsToEdit.photo);
+      setCountry(goodsToEdit.country);
+    }
+  }, [goodsToEdit]);
+  // console.log(goodsToEdit);
   return (
-    <div className="admin-add-page">
+    <div className="admin-edit-page">
       <Container>
-        <h2>Adding goods</h2>
+        <h2>Edit goods</h2>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -60,17 +82,17 @@ function AdminAddPage() {
             variant="standard"
           />
           <TextField
-            value={brand}
-            onChange={(e) => setBrand(e.target.value)}
-            label="Brand"
-            variant="standard"
-          />
-          <TextField
             value={price}
             onChange={(e) => setPrice(parseInt(e.target.value))}
             label="Price"
             variant="standard"
             type="number"
+          />
+          <TextField
+            value={brand}
+            onChange={(e) => setBrand(e.target.value)}
+            label="Brand"
+            variant="standard"
           />
           <TextField
             value={photo}
@@ -81,6 +103,7 @@ function AdminAddPage() {
           <FormControl variant="standard">
             <InputLabel>Country</InputLabel>
             <Select
+              defaultValue={country}
               value={country}
               onChange={(e) => setCountry(e.target.value)}
               label="Country"
@@ -93,7 +116,7 @@ function AdminAddPage() {
             </Select>
           </FormControl>
           <Button variant="outlined" type="submit">
-            Add goods
+            Edit goods
           </Button>
         </form>
       </Container>
@@ -101,4 +124,4 @@ function AdminAddPage() {
   );
 }
 
-export default AdminAddPage;
+export default AdminEditPage;

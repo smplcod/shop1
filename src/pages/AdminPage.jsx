@@ -17,7 +17,7 @@ function AdminPage() {
   React.useEffect(() => {
     getGoods();
   }, []);
-
+  console.log(goods);
   return (
     <div className="admin-page">
       <Container>

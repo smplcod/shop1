@@ -8,6 +8,7 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  getDoc,
 } from "firebase/firestore";
 
 export const AdminContext = React.createContext();
@@ -19,17 +20,17 @@ const reducer = (state, action) => {
       goods: action.payload,
     };
   }
-  // if (action.type === "GET_GOODS_TO_EDIT") {
-  //   return {
-  //     ...state,
-  //     watchToEdit: action.payload,
-  //   };
-  // }
+  if (action.type === "GET_GOODS_TO_EDIT") {
+    return {
+      ...state,
+      goodsToEdit: action.payload,
+    };
+  }
   return state;
 };
 
 function AdminProvider({ children }) {
-  const usersCollectionRef = collection(db, "goods");
+  const goodsCollectionRef = collection(db, "goods");
 
   const [state, dispatch] = React.useReducer(reducer, {
     goods: [],
@@ -37,29 +38,45 @@ function AdminProvider({ children }) {
   });
 
   const sendNewGoods = async (newGoods) => {
-    await addDoc(usersCollectionRef, {
+    await addDoc(goodsCollectionRef, {
       title: newGoods.title,
       price: Number(newGoods.price),
       brand: newGoods.brand,
       photo: newGoods.photo,
       country: newGoods.country,
+    }).then((docRef) => {
+      const dRef = doc(db, "goods", docRef.id);
+      updateDoc(dRef, { id: docRef.id });
     });
   };
 
   const getGoods = async () => {
-    const data = await getDocs(usersCollectionRef);
+    const data = await getDocs(goodsCollectionRef);
     dispatch({
       type: "GET_GOODS",
-      payload: data.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
+      // payload: data.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
+      payload: data.docs.map((doc) => ({ ...doc.data() })),
     });
   };
 
+  const getGoodsToEdit = async (id) => {
+    const docRef = doc(db, "goods", id);
+    const docSnap = await getDoc(docRef);
+    const res = docSnap.data();
+    dispatch({
+      type: "GET_GOODS_TO_EDIT",
+      payload: res,
+    });
+  };
+
+  const saveEditedGoods = async (id, newGoods) => {
+    const goodsDoc = doc(db, "goods", id);
+    await updateDoc(goodsDoc, newGoods);
+  };
+
   const deleteGoods = async (id) => {
-    // fetch(`${watchesApi}/${id}`, {
-    //   method: "DELETE",
-    // }).then(() => getWatches());
-    const userDoc = doc(db, "goods", id);
-    await deleteDoc(userDoc);
+    const goodsDoc = doc(db, "goods", id);
+    await deleteDoc(goodsDoc);
     getGoods();
   };
 
@@ -68,8 +85,11 @@ function AdminProvider({ children }) {
     countries2,
     getGoods,
     goods: state.goods,
+    goodsToEdit: state.goodsToEdit,
     deleteGoods,
     sendNewGoods,
+    getGoodsToEdit,
+    saveEditedGoods,
   };
   return <AdminContext.Provider value={data}>{children}</AdminContext.Provider>;
 }
