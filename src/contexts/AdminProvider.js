@@ -12,9 +12,30 @@ import {
 
 export const AdminContext = React.createContext();
 
+const reducer = (state, action) => {
+  if (action.type === "GET_GOODS") {
+    return {
+      ...state,
+      goods: action.payload,
+    };
+  }
+  // if (action.type === "GET_GOODS_TO_EDIT") {
+  //   return {
+  //     ...state,
+  //     watchToEdit: action.payload,
+  //   };
+  // }
+  return state;
+};
+
 function AdminProvider({ children }) {
-  const [goods, setGoods] = useState([]);
   const usersCollectionRef = collection(db, "goods");
+
+  // const [goods, setGoods] = useState([]);
+  const [state, dispatch] = React.useReducer(reducer, {
+    goods: [],
+    goodsToEdit: null,
+  });
 
   const sendNewGoods = async (newGoods) => {
     await addDoc(usersCollectionRef, {
@@ -26,19 +47,21 @@ function AdminProvider({ children }) {
     });
   };
 
-  useEffect(() => {
-    const getGoods = async () => {
-      const data = await getDocs(usersCollectionRef);
-      setGoods(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
-    // getGoods();
-  }, []);
+  const getGoods = async () => {
+    const data = await getDocs(usersCollectionRef);
+    // setGoods(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+    dispatch({
+      type: "GET_GOODS",
+      payload: data.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
+    });
+  };
+  // getGoods();
 
   const data = {
     countries1,
     countries2,
-    sendNewGoods,
-    goods,
+    // sendNewGoods,
+    goods: state.goods,
   };
   return <AdminContext.Provider value={data}>{children}</AdminContext.Provider>;
 }
