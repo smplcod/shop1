@@ -11,14 +11,37 @@ import {
 import { AdminContext } from "../contexts/AdminProvider";
 
 function AdminAddPage() {
-  const { arr, transferArr, countries1, countries2 } =
+  const { sendNewGoods, countries1, countries2 } =
     React.useContext(AdminContext);
 
   const [title, setTitle] = React.useState("");
-  const [brand, setBrand] = React.useState("");
   const [price, setPrice] = React.useState("");
+  const [brand, setBrand] = React.useState("");
   const [photo, setPhoto] = React.useState("");
   const [country, setCountry] = React.useState("");
+
+  const handleSubmit = () => {
+    const newGoods = {
+      title: title.trim(),
+      price,
+      brand: brand.trim(),
+      photo: photo.trim(),
+      country: country.trim(),
+    };
+
+    for (let i in newGoods) {
+      if (!newGoods[i]) {
+        alert("All fields must be filled!");
+        return;
+      }
+    }
+    sendNewGoods(newGoods);
+    setTitle("");
+    setPrice("");
+    setBrand("");
+    setPhoto("");
+    setCountry("");
+  };
 
   return (
     <div className="admin-add-page">
@@ -27,31 +50,31 @@ function AdminAddPage() {
         <form
           onSubmit={(e) => {
             e.preventDefault();
-            // handleSubmit();
+            handleSubmit();
           }}
         >
           <TextField
             value={title}
-            // onChange={(e) => setTitle(e.target.value)}
+            onChange={(e) => setTitle(e.target.value)}
             label="Title"
             variant="standard"
           />
           <TextField
             value={brand}
-            // onChange={(e) => setBrand(e.target.value)}
+            onChange={(e) => setBrand(e.target.value)}
             label="Brand"
             variant="standard"
           />
           <TextField
             value={price}
-            // onChange={(e) => setPrice(parseInt(e.target.value))}
+            onChange={(e) => setPrice(parseInt(e.target.value))}
             label="Price"
             variant="standard"
             type="number"
           />
           <TextField
             value={photo}
-            // onChange={(e) => setPhoto(e.target.value)}
+            onChange={(e) => setPhoto(e.target.value)}
             label="Photo"
             variant="standard"
           />
@@ -59,7 +82,7 @@ function AdminAddPage() {
             <InputLabel>Country</InputLabel>
             <Select
               value={country}
-              // onChange={(e) => setCountry(e.target.value)}
+              onChange={(e) => setCountry(e.target.value)}
               label="Country"
             >
               {countries2.map((item, key) => (
