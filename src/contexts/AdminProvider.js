@@ -31,7 +31,6 @@ const reducer = (state, action) => {
 function AdminProvider({ children }) {
   const usersCollectionRef = collection(db, "goods");
 
-  // const [goods, setGoods] = useState([]);
   const [state, dispatch] = React.useReducer(reducer, {
     goods: [],
     goodsToEdit: null,
@@ -54,14 +53,23 @@ function AdminProvider({ children }) {
       payload: data.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
     });
   };
-  // getGoods();
+
+  const deleteGoods = async (id) => {
+    // fetch(`${watchesApi}/${id}`, {
+    //   method: "DELETE",
+    // }).then(() => getWatches());
+    const userDoc = doc(db, "goods", id);
+    await deleteDoc(userDoc);
+    getGoods();
+  };
 
   const data = {
     countries1,
     countries2,
-    // sendNewGoods,
     getGoods,
     goods: state.goods,
+    deleteGoods,
+    sendNewGoods,
   };
   return <AdminContext.Provider value={data}>{children}</AdminContext.Provider>;
 }

@@ -12,7 +12,7 @@ import { Delete, Edit } from "@mui/icons-material";
 import { Link } from "react-router-dom";
 
 function AdminPage() {
-  const { getGoods, goods } = React.useContext(AdminContext);
+  const { getGoods, goods, deleteGoods } = React.useContext(AdminContext);
 
   React.useEffect(() => {
     getGoods();
@@ -47,12 +47,12 @@ function AdminPage() {
                   <img width={100} src={item.photo} alt="" />
                 </TableCell>
                 <TableCell>
-                  {/* <Delete onClick={() => deleteWatch(item.id)} /> */}
+                  <Delete onClick={() => deleteGoods(item.id)} />
                 </TableCell>
                 <TableCell>
-                  {/* <Link to={`/admin/edit/${item.id}`}>
+                  <Link to={`/admin/edit/${item.id}`}>
                     <Edit />
-                  </Link> */}
+                  </Link>
                 </TableCell>
               </TableRow>
             ))}
