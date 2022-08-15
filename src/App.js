@@ -1,15 +1,16 @@
 import Router from "./Router";
 import { createTheme, ThemeProvider } from "@mui/material";
-import { green, orange, purple } from "@mui/material/colors";
+// import { green, orange, purple } from "@mui/material/colors";
 
 function App() {
   const theme = createTheme({
     palette: {
       primary: {
-        main: "#000",
+        main: "#FFB954",
       },
       secondary: {
-        main: "#fff",
+        main: "#000",
+        // main: "#900C3F",
         // main: green[200],
       },
     },

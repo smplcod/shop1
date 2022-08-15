@@ -6,19 +6,22 @@ import CrudPage from "./pages/CrudPage";
 import AdminPage from "./pages/AdminPage";
 import AdminAddPage from "./pages/AdminAddPage";
 import Navbar from "./components/Navbar";
+import AdminProvider from "./contexts/AdminProvider";
 
 function Router() {
   return (
-    <BrowserRouter>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="/auth" element={<AuthPage />} />
-        <Route path="/crud" element={<CrudPage />} />
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="/admin/add" element={<AdminAddPage />} />
-      </Routes>
-    </BrowserRouter>
+    <AdminProvider>
+      <BrowserRouter>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<MainPage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/crud" element={<CrudPage />} />
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/admin/add" element={<AdminAddPage />} />
+        </Routes>
+      </BrowserRouter>
+    </AdminProvider>
   );
 }
 
