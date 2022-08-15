@@ -85,7 +85,7 @@ function AdminAddPage() {
               onChange={(e) => setCountry(e.target.value)}
               label="Country"
             >
-              {countries2.map((item, key) => (
+              {countries1.map((item, key) => (
                 <MenuItem key={item} value={item}>
                   {countries1[key]}
                 </MenuItem>
