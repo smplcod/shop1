@@ -49,7 +49,6 @@ function AdminProvider({ children }) {
 
   const getGoods = async () => {
     const data = await getDocs(usersCollectionRef);
-    // setGoods(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
     dispatch({
       type: "GET_GOODS",
       payload: data.docs.map((doc) => ({ ...doc.data(), id: doc.id })),
@@ -61,6 +60,7 @@ function AdminProvider({ children }) {
     countries1,
     countries2,
     // sendNewGoods,
+    getGoods,
     goods: state.goods,
   };
   return <AdminContext.Provider value={data}>{children}</AdminContext.Provider>;
