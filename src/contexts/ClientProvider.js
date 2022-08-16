@@ -12,6 +12,8 @@ import {
   query,
   orderBy,
   startAt,
+  limit,
+  startAfter,
 } from "firebase/firestore";
 
 export const ClientContext = React.createContext();
@@ -36,9 +38,14 @@ function ClientProvider({ children }) {
   const limitPerPage = 2;
   const [pagesCount, setPagesCount] = React.useState(1);
   const [currentPage, setCurrentPage] = React.useState(1);
-
+  const [last, setLast] = React.useState(null);
   const getGoods = async () => {
-    const data = await getDocs(goodsCollectionRef);
+    const first = query(collection(db, "goods"));
+    const data = await getDocs(first);
+    const lastVisible = data.docs[data.docs.length - 1];
+    setLast(lastVisible);
+
+    // const data = await getDocs(goodsCollectionRef);
 
     // const q1 = query(
     //   goodsCollectionRef,
@@ -60,9 +67,21 @@ function ClientProvider({ children }) {
     });
   };
 
+  const handlePagination = async () => {
+    const next = query(collection(db, "goods"), startAfter(last), limit(6));
+    const data = await getDocs(next);
+    const lastVisible = data.docs[data.docs.length - 1];
+    setLast(lastVisible);
+    dispatch({
+      type: "GET_GOODS",
+      payload: data.docs.map((doc) => ({ ...doc.data() })),
+    });
+  };
+
   const data = {
     getGoods,
     goods: state.goods,
+    handlePagination,
   };
 
   return (

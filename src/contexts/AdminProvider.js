@@ -44,6 +44,7 @@ function AdminProvider({ children }) {
       brand: newGoods.brand,
       photo: newGoods.photo,
       country: newGoods.country,
+      // createdAt: Date.now()
     }).then((docRef) => {
       const dRef = doc(db, "goods", docRef.id);
       updateDoc(dRef, { id: docRef.id });

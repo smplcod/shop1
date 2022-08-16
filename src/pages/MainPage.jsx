@@ -13,8 +13,14 @@ import {
 import { ClientContext } from "../contexts/ClientProvider";
 
 function MainPage() {
-  const { getGoods, goods, pagesCount, setCurrentPage, currentPage } =
-    React.useContext(ClientContext);
+  const {
+    getGoods,
+    goods,
+    pagesCount,
+    setCurrentPage,
+    currentPage,
+    handlePagination,
+  } = React.useContext(ClientContext);
 
   React.useEffect(() => {
     getGoods();
@@ -73,8 +79,8 @@ function MainPage() {
         </div>
         <div className="pagination-block">
           <Pagination
-            onChange={(_, newValue) => setCurrentPage(newValue)}
-            count={pagesCount}
+            onChange={() => handlePagination()}
+            count={5}
             variant="outlined"
             shape="rounded"
           />
