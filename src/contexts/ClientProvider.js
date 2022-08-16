@@ -33,34 +33,25 @@ function ClientProvider({ children }) {
 
   const [state, dispatch] = React.useReducer(reducer, {
     goods: [],
+    totalPagesCount: 1,
   });
 
   const limitPerPage = 8;
   const [pagesCount, setPagesCount] = React.useState(1);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [last, setLast] = React.useState(null);
-  console.log(currentPage);
+  // console.log(currentPage);
   const getGoods = async () => {
     const first = query(collection(db, "goods"));
     const data = await getDocs(first);
     // Task  Посчитать кол-во страниц
-    const totalPages = Math.ceil(data.docs.length / limitPerPage);
-    console.log(totalPages);
+    const totalPagesCount = Math.ceil(data.docs.length / limitPerPage);
+    // console.log(totalPagesCount);
 
-    const newData =
-      // const data = await getDocs(goodsCollectionRef);
-
-      // const q1 = query(
-      //   goodsCollectionRef,
-      //   startAfter(currentPage),
-      //   limit(limitPerPage)
-      // );
-      // const querySnapshot = await getDocs(q1);
-
-      dispatch({
-        type: "GET_GOODS",
-        payload: data.docs.map((doc) => ({ ...doc.data() })),
-      });
+    dispatch({
+      type: "GET_GOODS",
+      payload: data.docs.map((doc) => ({ ...doc.data() })),
+    });
   };
 
   const handlePagination = async () => {

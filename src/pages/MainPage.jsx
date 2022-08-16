@@ -24,8 +24,10 @@ function MainPage() {
 
   const [totalPages, setTotalPages] = React.useState(4);
   const [current, setCurrent] = React.useState(1);
+
   const handleProducts = () => {
-    const prod = goods.slice((current - 1) * 6, 6);
+    const arr = [...goods];
+    const prod = arr.splice((current - 1) * 6, 6);
     setProducts(prod);
   };
 
@@ -35,6 +37,7 @@ function MainPage() {
   React.useEffect(() => {
     handleProducts();
   }, [goods, current]);
+
   const [products, setProducts] = React.useState(goods);
 
   // Toastify({
