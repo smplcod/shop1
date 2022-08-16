@@ -13,7 +13,8 @@ import {
 import { ClientContext } from "../contexts/ClientProvider";
 
 function MainPage() {
-  const { getGoods, goods } = React.useContext(ClientContext);
+  const { getGoods, goods, pagesCount, setCurrentPage, currentPage } =
+    React.useContext(ClientContext);
 
   React.useEffect(() => {
     getGoods();
@@ -70,14 +71,14 @@ function MainPage() {
             </Card>
           ))}
         </div>
-        {/* <div className="pagination-block">
+        <div className="pagination-block">
           <Pagination
             onChange={(_, newValue) => setCurrentPage(newValue)}
             count={pagesCount}
             variant="outlined"
             shape="rounded"
           />
-        </div> */}
+        </div>
       </Container>
     </div>
   );

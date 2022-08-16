@@ -30,6 +30,10 @@ function ClientProvider({ children }) {
     goods: [],
   });
 
+  const limit = 2;
+  const [pagesCount, setPagesCount] = React.useState(1);
+  const [currentPage, setCurrentPage] = React.useState(1);
+
   const getGoods = async () => {
     const data = await getDocs(goodsCollectionRef);
     dispatch({
