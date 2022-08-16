@@ -25,6 +25,12 @@ const reducer = (state, action) => {
       goods: action.payload,
     };
   }
+  if (action.type === "GET_PAGES_COUNT") {
+    return {
+      ...state,
+      totalPagesCount: action.payload,
+    };
+  }
   return state;
 };
 
@@ -36,40 +42,44 @@ function ClientProvider({ children }) {
     totalPagesCount: 1,
   });
 
-  const limitPerPage = 8;
-  const [pagesCount, setPagesCount] = React.useState(1);
-  const [currentPage, setCurrentPage] = React.useState(1);
+  console.log(state.totalPagesCount, "page count");
+  const limitPerPage = 6;
+
   const [last, setLast] = React.useState(null);
-  // console.log(currentPage);
+
   const getGoods = async () => {
     const first = query(collection(db, "goods"));
     const data = await getDocs(first);
     // Task  Посчитать кол-во страниц
     const totalPagesCount = Math.ceil(data.docs.length / limitPerPage);
-    // console.log(totalPagesCount);
 
     dispatch({
       type: "GET_GOODS",
       payload: data.docs.map((doc) => ({ ...doc.data() })),
     });
-  };
-
-  const handlePagination = async () => {
-    const next = query(collection(db, "goods"), startAfter(last), limit(6));
-    const data = await getDocs(next);
-    const lastVisible = data.docs[data.docs.length - 1];
-    setLast(lastVisible);
     dispatch({
-      type: "GET_GOODS",
-      payload: data.docs.map((doc) => ({ ...doc.data() })),
+      type: "GET_PAGES_COUNT",
+      payload: Math.ceil(data.docs.length / limitPerPage),
     });
   };
+
+  // const handlePagination = async () => {
+  //   const next = query(collection(db, "goods"), startAfter(last), limit(6));
+  //   const data = await getDocs(next);
+  //   const lastVisible = data.docs[data.docs.length - 1];
+  //   setLast(lastVisible);
+  //   dispatch({
+  //     type: "GET_GOODS",
+  //     payload: data.docs.map((doc) => ({ ...doc.data() })),
+  //   });
+  // };
 
   const data = {
     getGoods,
+    // handlePagination,
+    limitPerPage,
     goods: state.goods,
-    handlePagination,
-    setCurrentPage,
+    totalPagesCount: state.totalPagesCount,
   };
 
   return (

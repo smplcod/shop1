@@ -13,32 +13,25 @@ import {
 import { ClientContext } from "../contexts/ClientProvider";
 
 function MainPage() {
-  const {
-    getGoods,
-    goods,
-    pagesCount,
-    setCurrentPage,
-    currentPage,
-    handlePagination,
-  } = React.useContext(ClientContext);
+  const { getGoods, goods, totalPagesCount, limitPerPage } =
+    React.useContext(ClientContext);
 
-  const [totalPages, setTotalPages] = React.useState(4);
   const [current, setCurrent] = React.useState(1);
+  const [products, setProducts] = React.useState(goods);
 
   const handleProducts = () => {
     const arr = [...goods];
-    const prod = arr.splice((current - 1) * 6, 6);
+    const prod = arr.splice((current - 1) * limitPerPage, limitPerPage);
     setProducts(prod);
   };
 
   React.useEffect(() => {
     getGoods();
   }, []);
+
   React.useEffect(() => {
     handleProducts();
   }, [goods, current]);
-
-  const [products, setProducts] = React.useState(goods);
 
   // Toastify({
   //   text: "This is a toast with offset",
@@ -102,7 +95,7 @@ function MainPage() {
         <div className="pagination-block">
           <Pagination
             onChange={(_, value) => setCurrent(value)}
-            count={totalPages}
+            count={totalPagesCount}
             variant="outlined"
             shape="rounded"
           />
