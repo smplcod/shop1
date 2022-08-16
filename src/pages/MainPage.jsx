@@ -21,14 +21,14 @@ function MainPage() {
 
   const handlePagination = () => {
     const arr = [...goods];
-    const prod = arr.splice((current - 1) * limitPerPage, limitPerPage);
-    setProducts(prod);
+    let prod = undefined;
+    prod = arr.splice((current - 1) * limitPerPage, limitPerPage);
     if (searchWord) {
-      const res = arr.filter((item) => {
+      prod = prod.filter((item) => {
         return item.title.includes(searchWord);
       });
-      setProducts(res);
     }
+    setProducts(prod);
   };
   console.log(goods);
 
