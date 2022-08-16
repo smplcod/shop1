@@ -23,7 +23,7 @@ function MainPage() {
   return (
     <div className="main-page">
       <Container>
-        <h2>All goods catalog</h2>
+        <h2>All rollerskates</h2>
         {/* <div className="filter-block">
           <h4>Filter by price:</h4>
           <Slider
@@ -58,7 +58,7 @@ function MainPage() {
                   </li>
                   <li>
                     <span>Price:</span>
-                    <span>{item.price}сом</span>
+                    <span>{item.price}EUR</span>
                   </li>
                 </ul>
                 {/* <Button

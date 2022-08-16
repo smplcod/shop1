@@ -16,6 +16,14 @@ import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import MoreIcon from "@mui/icons-material/MoreVert";
 
+// import AddCircleIcon from "@mui/icons-material/AddCircle";
+import PlaylistAddIcon from "@mui/icons-material/PlaylistAdd";
+// import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
+
+// import LoginIcon from "@mui/icons-material/Login";
+// import LogoutIcon from "@mui/icons-material/Logout";
+
 import { Link } from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
@@ -184,20 +192,24 @@ export default function PrimarySearchAppBar() {
             component="div"
             sx={{ display: { xs: "none", sm: "block" } }}
           >
-            {/* <Link className="navbar-link" to="/">
-              Main
+            <Link className="navbar-link" to="/">
+              <b>Rollerskates Shop</b>
             </Link>
-            <Link className="navbar-link" to="/auth">
+            {/* <Link className="navbar-link" to="/auth">
               tAuth
             </Link> */}
-            <Link className="navbar-link" to="/crud">
+            {/* <Link className="navbar-link" to="/crud">
               tCRUD
-            </Link>
+            </Link> */}
             <Link className="navbar-link" to="/admin">
-              Admin
+              <IconButton color="inherit">
+                <PlaylistAddCheckIcon />
+              </IconButton>
             </Link>
             <Link className="navbar-link" to="/admin/add">
-              Add
+              <IconButton color="inherit">
+                <PlaylistAddIcon />
+              </IconButton>
             </Link>
           </Typography>
           {/* <Search>
@@ -229,7 +241,7 @@ export default function PrimarySearchAppBar() {
                 <ShoppingCartIcon />
               </Badge>
             </IconButton>
-            {/* <IconButton
+            <IconButton
               size="large"
               edge="end"
               aria-label="account of current user"
@@ -238,10 +250,12 @@ export default function PrimarySearchAppBar() {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <AccountCircle />
-            </IconButton> */}
+              <Link className="navbar-link" to="/auth">
+                <AccountCircle />
+              </Link>
+            </IconButton>
           </Box>
-          <Box sx={{ display: { xs: "flex", md: "none" } }}>
+          {/* <Box sx={{ display: { xs: "flex", md: "none" } }}>
             <IconButton
               size="large"
               aria-label="show more"
@@ -252,11 +266,11 @@ export default function PrimarySearchAppBar() {
             >
               <MoreIcon />
             </IconButton>
-          </Box>
+          </Box> */}
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
-      {renderMenu}
+      {/* {renderMenu} */}
     </Box>
   );
 }
