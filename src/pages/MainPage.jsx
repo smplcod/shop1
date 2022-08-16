@@ -19,7 +19,7 @@ function MainPage() {
   const [current, setCurrent] = React.useState(1);
   const [products, setProducts] = React.useState(goods);
 
-  const handleProducts = () => {
+  const handlePagination = () => {
     const arr = [...goods];
     const prod = arr.splice((current - 1) * limitPerPage, limitPerPage);
     setProducts(prod);
@@ -30,7 +30,7 @@ function MainPage() {
   }, []);
 
   React.useEffect(() => {
-    handleProducts();
+    handlePagination();
   }, [goods, current]);
 
   // Toastify({
@@ -79,7 +79,7 @@ function MainPage() {
                   </li>
                   <li>
                     <span>Price:</span>
-                    <span>{item.price}EUR</span>
+                    <span>{item.price} EUR</span>
                   </li>
                 </ul>
                 {/* <Button

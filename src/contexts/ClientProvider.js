@@ -42,7 +42,6 @@ function ClientProvider({ children }) {
     totalPagesCount: 1,
   });
 
-  console.log(state.totalPagesCount, "page count");
   const limitPerPage = 6;
 
   const [last, setLast] = React.useState(null);
@@ -50,7 +49,6 @@ function ClientProvider({ children }) {
   const getGoods = async () => {
     const first = query(collection(db, "goods"));
     const data = await getDocs(first);
-    // Task  Посчитать кол-во страниц
     const totalPagesCount = Math.ceil(data.docs.length / limitPerPage);
 
     dispatch({
@@ -63,20 +61,8 @@ function ClientProvider({ children }) {
     });
   };
 
-  // const handlePagination = async () => {
-  //   const next = query(collection(db, "goods"), startAfter(last), limit(6));
-  //   const data = await getDocs(next);
-  //   const lastVisible = data.docs[data.docs.length - 1];
-  //   setLast(lastVisible);
-  //   dispatch({
-  //     type: "GET_GOODS",
-  //     payload: data.docs.map((doc) => ({ ...doc.data() })),
-  //   });
-  // };
-
   const data = {
     getGoods,
-    // handlePagination,
     limitPerPage,
     goods: state.goods,
     totalPagesCount: state.totalPagesCount,
