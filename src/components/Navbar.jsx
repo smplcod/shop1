@@ -9,6 +9,7 @@ import InputBase from "@mui/material/InputBase";
 import Badge from "@mui/material/Badge";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+
 import MenuIcon from "@mui/icons-material/Menu";
 import SearchIcon from "@mui/icons-material/Search";
 import AccountCircle from "@mui/icons-material/AccountCircle";
@@ -23,6 +24,8 @@ import PlaylistAddCheckIcon from "@mui/icons-material/PlaylistAddCheck";
 
 // import LoginIcon from "@mui/icons-material/Login";
 // import LogoutIcon from "@mui/icons-material/Logout";
+
+import { ClientContext } from "../contexts/ClientProvider";
 
 import { Link } from "react-router-dom";
 
@@ -67,7 +70,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+export default function Navbar() {
+  const { searchWord, setSearchWord, getWatches, basketCount } =
+    React.useContext(ClientContext);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
@@ -212,15 +218,19 @@ export default function PrimarySearchAppBar() {
               </IconButton>
             </Link>
           </Typography>
-          {/* <Search>
+          <Search>
             <SearchIconWrapper>
               <SearchIcon />
             </SearchIconWrapper>
             <StyledInputBase
+              value={searchWord}
+              onChange={(e) => {
+                setSearchWord(e.target.value);
+              }}
               placeholder="Search…"
               inputProps={{ "aria-label": "search" }}
             />
-          </Search> */}
+          </Search>
           <Box sx={{ flexGrow: 1 }} />
           <Box sx={{ display: { xs: "none", md: "flex" } }}>
             <IconButton

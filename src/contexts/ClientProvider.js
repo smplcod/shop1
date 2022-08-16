@@ -42,13 +42,15 @@ function ClientProvider({ children }) {
     totalPagesCount: 1,
   });
 
-  const limitPerPage = 6;
+  const [searchWord, setSearchWord] = React.useState("");
 
-  const [last, setLast] = React.useState(null);
+  const limitPerPage = 6;
+  // const [last, setLast] = React.useState(null);
 
   const getGoods = async () => {
     const first = query(collection(db, "goods"));
     const data = await getDocs(first);
+
     const totalPagesCount = Math.ceil(data.docs.length / limitPerPage);
 
     dispatch({
@@ -66,6 +68,8 @@ function ClientProvider({ children }) {
     limitPerPage,
     goods: state.goods,
     totalPagesCount: state.totalPagesCount,
+    setSearchWord,
+    searchWord,
   };
 
   return (
