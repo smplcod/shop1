@@ -13,14 +13,8 @@ import {
 import { ClientContext } from "../contexts/ClientProvider";
 
 function MainPage() {
-  const {
-    getGoods,
-    goods,
-    totalPagesCount,
-    limitPerPage,
-    setSearchWord,
-    searchWord,
-  } = React.useContext(ClientContext);
+  const { getGoods, goods, totalPagesCount, limitPerPage, searchWord } =
+    React.useContext(ClientContext);
 
   const [current, setCurrent] = React.useState(1);
   const [products, setProducts] = React.useState(goods);
@@ -29,16 +23,27 @@ function MainPage() {
     const arr = [...goods];
     const prod = arr.splice((current - 1) * limitPerPage, limitPerPage);
     setProducts(prod);
+    if (searchWord) {
+      const res = arr.filter((item) => {
+        return item.title.includes(searchWord);
+      });
+      setProducts(res);
+    }
   };
+  console.log(goods);
 
-  const handleSearch = (searchWord) => {
-    const arr = [...goods];
+  const handleSearch = () => {
+    const arr = [...products];
     // const prod = arr.splice((current - 1) * limitPerPage, limitPerPage);
 
-    const prod = arr
-      .map((item, i) => (item.indexOf(searchWord) >= 0 ? i : -1))
-      .filter((item) => item >= 0);
-    setProducts(prod);
+    // const prod = arr
+    //   .map((item, i) => (item.indexOf(searchWord) >= 0 ? i : -1))
+    //   .filter((item) => item >= 0);
+    // console.log(searchWord);
+
+    // setProducts(res);
+
+    // setProducts(res);
   };
 
   React.useEffect(() => {
@@ -47,12 +52,9 @@ function MainPage() {
 
   React.useEffect(() => {
     handlePagination();
-  }, [goods, current]);
+  }, [goods, current, searchWord]);
 
-  React.useEffect(() => {
-    handleSearch();
-  }, [searchWord]);
-
+  // React.us
   // Toastify({
   //   text: "This is a toast with offset",
   //   offset: {
