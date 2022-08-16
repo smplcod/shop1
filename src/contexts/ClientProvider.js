@@ -9,6 +9,9 @@ import {
   deleteDoc,
   doc,
   getDoc,
+  query,
+  orderBy,
+  startAt,
 } from "firebase/firestore";
 
 export const ClientContext = React.createContext();
@@ -30,15 +33,30 @@ function ClientProvider({ children }) {
     goods: [],
   });
 
-  const limit = 2;
+  const limitPerPage = 2;
   const [pagesCount, setPagesCount] = React.useState(1);
   const [currentPage, setCurrentPage] = React.useState(1);
 
   const getGoods = async () => {
     const data = await getDocs(goodsCollectionRef);
+
+    // const q1 = query(
+    //   goodsCollectionRef,
+    //   startAfter(currentPage),
+    //   limit(limitPerPage)
+    // );
+    // const querySnapshot = await getDocs(q1);
+
     dispatch({
       type: "GET_GOODS",
       payload: data.docs.map((doc) => ({ ...doc.data() })),
+      // payload: querySnapshot,
+      // payload: querySnapshot.forEach((doc) => {
+      // ({ ...doc.data() });
+      // console.log(doc.id, " => ", doc.data());
+      // }),
+      // payload: querySnapshot.forEach((doc) => ({ ...doc.data() })),
+      // payload: querySnapshot,
     });
   };
 
