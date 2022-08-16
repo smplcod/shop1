@@ -22,9 +22,28 @@ function MainPage() {
     handlePagination,
   } = React.useContext(ClientContext);
 
+  const [totalPages, setTotalPages] = React.useState(4);
+  const [current, setCurrent] = React.useState(1);
+  const handleProducts = () => {
+    const prod = goods.slice((current - 1) * 6, 6);
+    setProducts(prod);
+  };
+
   React.useEffect(() => {
     getGoods();
   }, []);
+  React.useEffect(() => {
+    handleProducts();
+  }, [goods, current]);
+  const [products, setProducts] = React.useState(goods);
+
+  // Toastify({
+  //   text: "This is a toast with offset",
+  //   offset: {
+  //     x: 50,
+  //     y: 10,
+  //   },
+  // }).showToast();
 
   return (
     <div className="main-page">
@@ -41,7 +60,7 @@ function MainPage() {
           />
         </div> */}
         <div className="products">
-          {goods.map((item) => (
+          {products.map((item) => (
             <Card key={item.id} className="product-card">
               <CardMedia component="img" height="140" image={item.photo} />
               <CardContent>
@@ -79,8 +98,8 @@ function MainPage() {
         </div>
         <div className="pagination-block">
           <Pagination
-            onChange={() => handlePagination()}
-            count={5}
+            onChange={(_, value) => setCurrent(value)}
+            count={totalPages}
             variant="outlined"
             shape="rounded"
           />

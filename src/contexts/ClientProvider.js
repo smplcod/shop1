@@ -35,36 +35,32 @@ function ClientProvider({ children }) {
     goods: [],
   });
 
-  const limitPerPage = 2;
+  const limitPerPage = 8;
   const [pagesCount, setPagesCount] = React.useState(1);
   const [currentPage, setCurrentPage] = React.useState(1);
   const [last, setLast] = React.useState(null);
+  console.log(currentPage);
   const getGoods = async () => {
     const first = query(collection(db, "goods"));
     const data = await getDocs(first);
-    const lastVisible = data.docs[data.docs.length - 1];
-    setLast(lastVisible);
+    // Task  Посчитать кол-во страниц
+    const totalPages = Math.ceil(data.docs.length / limitPerPage);
+    console.log(totalPages);
 
-    // const data = await getDocs(goodsCollectionRef);
+    const newData =
+      // const data = await getDocs(goodsCollectionRef);
 
-    // const q1 = query(
-    //   goodsCollectionRef,
-    //   startAfter(currentPage),
-    //   limit(limitPerPage)
-    // );
-    // const querySnapshot = await getDocs(q1);
+      // const q1 = query(
+      //   goodsCollectionRef,
+      //   startAfter(currentPage),
+      //   limit(limitPerPage)
+      // );
+      // const querySnapshot = await getDocs(q1);
 
-    dispatch({
-      type: "GET_GOODS",
-      payload: data.docs.map((doc) => ({ ...doc.data() })),
-      // payload: querySnapshot,
-      // payload: querySnapshot.forEach((doc) => {
-      // ({ ...doc.data() });
-      // console.log(doc.id, " => ", doc.data());
-      // }),
-      // payload: querySnapshot.forEach((doc) => ({ ...doc.data() })),
-      // payload: querySnapshot,
-    });
+      dispatch({
+        type: "GET_GOODS",
+        payload: data.docs.map((doc) => ({ ...doc.data() })),
+      });
   };
 
   const handlePagination = async () => {
@@ -82,6 +78,7 @@ function ClientProvider({ children }) {
     getGoods,
     goods: state.goods,
     handlePagination,
+    setCurrentPage,
   };
 
   return (
