@@ -43,6 +43,7 @@ function ClientProvider({ children }) {
   });
 
   const [searchWord, setSearchWord] = React.useState("");
+  const [prodLength, setProdLength] = React.useState(undefined);
 
   const limitPerPage = 6;
   // const [last, setLast] = React.useState(null);
@@ -50,8 +51,8 @@ function ClientProvider({ children }) {
   const getGoods = async () => {
     const first = query(collection(db, "goods"));
     const data = await getDocs(first);
-
-    const totalPagesCount = Math.ceil(data.docs.length / limitPerPage);
+    if (prodLength === undefined) setProdLength(data.docs.length);
+    const totalPagesCount = Math.ceil(setProdLength / limitPerPage);
 
     dispatch({
       type: "GET_GOODS",
@@ -70,6 +71,8 @@ function ClientProvider({ children }) {
     totalPagesCount: state.totalPagesCount,
     setSearchWord,
     searchWord,
+    setProdLength,
+    prodLength,
   };
 
   return (

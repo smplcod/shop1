@@ -13,37 +13,40 @@ import {
 import { ClientContext } from "../contexts/ClientProvider";
 
 function MainPage() {
-  const { getGoods, goods, totalPagesCount, limitPerPage, searchWord } =
-    React.useContext(ClientContext);
+  const {
+    getGoods,
+    goods,
+    totalPagesCount,
+    limitPerPage,
+    searchWord,
+    setProdLength,
+  } = React.useContext(ClientContext);
 
   const [current, setCurrent] = React.useState(1);
   const [products, setProducts] = React.useState(goods);
 
-  const handlePagination = () => {
-    const arr = [...goods];
+  // const handleFilters = () => {
+  //   const arr = [...goods];
+  //   let prod = undefined;
+  //   prod = arr.splice((current - 1) * limitPerPage, limitPerPage);
+  //   if (searchWord) {
+  //     prod = prod.filter((item) => {
+  //       return item.title.includes(searchWord);
+  //     });
+  //   }
+  //   setProducts(prod);
+  // };
+
+  const handleFilters = () => {
+    const arr = [...products];
     let prod = undefined;
     prod = arr.splice((current - 1) * limitPerPage, limitPerPage);
     if (searchWord) {
-      prod = prod.filter((item) => {
-        return item.title.includes(searchWord);
-      });
+      prod = prod.filter((item) => item.title.includes(searchWord));
+      setProdLength(prod.length);
+      // prod = prod.splice((current - 1) * limitPerPage, limitPerPage);
     }
     setProducts(prod);
-  };
-  console.log(goods);
-
-  const handleSearch = () => {
-    const arr = [...products];
-    // const prod = arr.splice((current - 1) * limitPerPage, limitPerPage);
-
-    // const prod = arr
-    //   .map((item, i) => (item.indexOf(searchWord) >= 0 ? i : -1))
-    //   .filter((item) => item >= 0);
-    // console.log(searchWord);
-
-    // setProducts(res);
-
-    // setProducts(res);
   };
 
   React.useEffect(() => {
@@ -51,8 +54,12 @@ function MainPage() {
   }, []);
 
   React.useEffect(() => {
-    handlePagination();
-  }, [goods, current, searchWord]);
+    setProducts(goods);
+  }, [goods]);
+
+  React.useEffect(() => {
+    handleFilters();
+  }, [current, searchWord]);
 
   // React.us
   // Toastify({
