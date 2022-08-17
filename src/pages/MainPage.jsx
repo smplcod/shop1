@@ -70,7 +70,7 @@ function MainPage() {
   React.useEffect(() => {
     handleFilters();
   }, [current, searchWord, ...filterByPrice]);
-  console.log(filterByPrice);
+  // console.log(filterByPrice);
 
   // React.us
   // Toastify({
