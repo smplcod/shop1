@@ -24,29 +24,28 @@ function MainPage() {
 
   const [current, setCurrent] = React.useState(1);
   const [products, setProducts] = React.useState(goods);
-
-  // const handleFilters = () => {
-  //   const arr = [...goods];
-  //   let prod = undefined;
-  //   prod = arr.splice((current - 1) * limitPerPage, limitPerPage);
-  //   if (searchWord) {
-  //     prod = prod.filter((item) => {
-  //       return item.title.includes(searchWord);
-  //     });
-  //   }
-  //   setProducts(prod);
-  // };
+  const [pageCount, setPageCount] = React.useState(totalPagesCount);
 
   const handleFilters = () => {
-    const arr = [...products];
-    let prod = undefined;
+    let arr = [...goods];
+    //
+    let prod = [];
     prod = arr.splice((current - 1) * limitPerPage, limitPerPage);
+    setProducts(prod);
     if (searchWord) {
+      setPageCount(Math.ceil(products.length / limitPerPage));
       prod = prod.filter((item) => item.title.includes(searchWord));
-      setProdLength(prod.length);
-      // prod = prod.splice((current - 1) * limitPerPage, limitPerPage);
+      setProducts(arr);
+    } else {
+      setPageCount(totalPagesCount);
     }
     setProducts(prod);
+  };
+
+  const initialProducts = () => {
+    const prod = [...goods];
+    const arr = prod.splice((current - 1) * limitPerPage, limitPerPage);
+    setProducts(arr);
   };
 
   React.useEffect(() => {
@@ -54,7 +53,8 @@ function MainPage() {
   }, []);
 
   React.useEffect(() => {
-    setProducts(goods);
+    initialProducts();
+    setPageCount(totalPagesCount);
   }, [goods]);
 
   React.useEffect(() => {
@@ -124,7 +124,7 @@ function MainPage() {
         <div className="pagination-block">
           <Pagination
             onChange={(_, value) => setCurrent(value)}
-            count={totalPagesCount}
+            count={pageCount}
             variant="outlined"
             shape="rounded"
           />

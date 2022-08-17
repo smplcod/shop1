@@ -52,8 +52,7 @@ function ClientProvider({ children }) {
     const first = query(collection(db, "goods"));
     const data = await getDocs(first);
     if (prodLength === undefined) setProdLength(data.docs.length);
-    const totalPagesCount = Math.ceil(setProdLength / limitPerPage);
-
+    // const totalPagesCount = Math.ceil(setProdLength / limitPerPage);
     dispatch({
       type: "GET_GOODS",
       payload: data.docs.map((doc) => ({ ...doc.data() })),
