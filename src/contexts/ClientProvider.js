@@ -44,9 +44,10 @@ function ClientProvider({ children }) {
 
   const [searchWord, setSearchWord] = React.useState("");
   const [prodLength, setProdLength] = React.useState(undefined);
-
   const limitPerPage = 6;
-  // const [last, setLast] = React.useState(null);
+
+  const [filterByPrice, setFilterByPrice] = React.useState([0, 999999]);
+  const [minMax, setMinMax] = React.useState([0, 999999]);
 
   const getGoods = async () => {
     const first = query(collection(db, "goods"));
@@ -62,6 +63,20 @@ function ClientProvider({ children }) {
       payload: Math.ceil(data.docs.length / limitPerPage),
     });
   };
+  const getPrices = (goods) => {
+    let arr = [...goods];
+    if (arr.length > 0) {
+      arr.sort((a, b) => a.price - b.price);
+      let max = arr[arr.length - 1].price;
+      let min = arr[0].price;
+      setFilterByPrice([min, max]);
+      setMinMax([min, max]);
+    }
+  };
+
+  React.useEffect(() => {
+    getPrices(state.goods);
+  }, [state.goods]);
 
   const data = {
     getGoods,
@@ -72,6 +87,10 @@ function ClientProvider({ children }) {
     searchWord,
     setProdLength,
     prodLength,
+
+    filterByPrice,
+    setFilterByPrice,
+    minMax,
   };
 
   return (

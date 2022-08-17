@@ -20,15 +20,25 @@ function MainPage() {
     limitPerPage,
     searchWord,
     setProdLength,
+    filterByPrice,
+    setFilterByPrice,
+    minMax,
   } = React.useContext(ClientContext);
 
   const [current, setCurrent] = React.useState(1);
   const [products, setProducts] = React.useState(goods);
   const [pageCount, setPageCount] = React.useState(totalPagesCount);
 
+  const handlePriceFilter = (value) => {
+    setPageCount(Math.ceil(products.length / limitPerPage));
+    setFilterByPrice(value);
+  };
+
   const handleFilters = () => {
     let arr = [...goods];
-    //
+    arr = arr.filter(
+      (item) => item.price >= filterByPrice[0] && item.price <= filterByPrice[1]
+    );
     let prod = [];
     prod = arr.splice((current - 1) * limitPerPage, limitPerPage);
     setProducts(prod);
@@ -59,7 +69,8 @@ function MainPage() {
 
   React.useEffect(() => {
     handleFilters();
-  }, [current, searchWord]);
+  }, [current, searchWord, ...filterByPrice]);
+  console.log(filterByPrice);
 
   // React.us
   // Toastify({
@@ -74,16 +85,16 @@ function MainPage() {
     <div className="main-page">
       <Container>
         <h2>All rollerskates</h2>
-        {/* <div className="filter-block">
+        <div className="filter-block">
           <h4>Filter by price:</h4>
           <Slider
             max={minMax[1]}
             min={minMax[0]}
             valueLabelDisplay="auto"
             value={filterByPrice}
-            onChange={(_, newValue) => setFilterByPrice(newValue)}
+            onChange={(_, newValue) => handlePriceFilter(newValue)}
           />
-        </div> */}
+        </div>
         <div className="products">
           {products.map((item) => (
             <Card key={item.id} className="product-card">
